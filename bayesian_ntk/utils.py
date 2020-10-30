@@ -15,7 +15,8 @@ def get_toy_data(
     noise_scale,
     train_points,
     test_points,
-    parted = True
+    parted = True,
+    target_fn = None,
 ):
     """Fetch train and test data for Figure 1 of NeurIPS submission.
        Adds noise to train targets as per Lemma 3 of
@@ -59,8 +60,9 @@ def get_toy_data(
         )
 
         train_xs = np.concatenate((train_xs_left, train_xs_right))
-
-    target_fn = lambda x: x * np.sin(x)
+    
+    if target_fn is None:
+        target_fn = lambda x: x * np.sin(x)
 
     train_ys = target_fn(train_xs)
     train_ys += noise_scale * random.normal(y_key, (train_points, 1))
